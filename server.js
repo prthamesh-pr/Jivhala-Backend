@@ -1,0 +1,25 @@
+const express = require('express');
+const dotenv = require('dotenv');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const connectDB = require('./config/db');
+const path = require('path');
+
+dotenv.config();
+connectDB();
+
+const app = express();
+
+app.use(cors());
+app.use(bodyParser.json());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/profile', require('./routes/profileRoutes'));
+app.use('/api/vehicle', require('./routes/vehicleRoutes'));
+app.use('/api/buyer', require('./routes/buyerRoutes'));
+app.use('/api/dashboard', require('./routes/dashboardRoutes'));
+
+app.listen(process.env.PORT, () => {
+  console.log(`Server running on port ${process.env.PORT}`);
+});
