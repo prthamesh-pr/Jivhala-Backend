@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/User'); // Import the User model
+const User = require('../models/user'); // Import the User model
 
 // ✅ TEMP test user route
 router.post('/create-test-user', async (req, res) => {
@@ -23,5 +23,14 @@ router.post('/login', async (req, res) => {
   if (!user) return res.status(401).json({ message: 'Invalid credentials' });
   res.json(user);
 });
+
+module.exports = router;
+
+// routes/authRoutes.js
+const express = require('express');
+const { login, createTestUser } = require('../controllers/authController');
+
+router.post('/login', login);
+router.post('/create-test-user', createTestUser); // Optional, for one-time setup
 
 module.exports = router;
