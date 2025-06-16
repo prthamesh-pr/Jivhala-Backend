@@ -4,7 +4,8 @@ const {
   addVehicle,
   getAllVehicles,
   getVehicleById,
-  updateVehicle
+  updateVehicle,
+  deleteVehicle
 } = require('../controllers/vehicleController');
 
 const router = express.Router();
@@ -13,5 +14,6 @@ router.post('/add', upload.array('images', 6), addVehicle);
 router.get('/', getAllVehicles);
 router.get('/:id', getVehicleById);
 router.put('/:id', updateVehicle);
+router.delete('/:id', deleteVehicle); // ✅ Added delete route
 
 module.exports = router;
