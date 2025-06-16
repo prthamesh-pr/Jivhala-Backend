@@ -1,15 +1,26 @@
 const Vehicle = require('../models/Vehicle');
 
+// Helper function to safely cast boolean values
+const toBool = (val) => val === 'true' || val === true;
+
 exports.addVehicle = async (req, res) => {
   try {
     const images = req.files ? req.files.map(file => file.filename) : [];
 
-    const newVehicle = new Vehicle({
+    const vehicleData = {
       ...req.body,
       images,
-    });
+      firstChecked: toBool(req.body.firstChecked),
+      secondChecked: toBool(req.body.secondChecked),
+      thirdChecked: toBool(req.body.thirdChecked),
+      rc: toBool(req.body.rc),
+      puc: toBool(req.body.puc),
+      noc: toBool(req.body.noc),
+    };
 
+    const newVehicle = new Vehicle(vehicleData);
     await newVehicle.save();
+
     res.status(201).json(newVehicle);
   } catch (err) {
     console.error('Add Vehicle Error:', err);
@@ -38,11 +49,21 @@ exports.getVehicleById = async (req, res) => {
 
 exports.updateVehicle = async (req, res) => {
   try {
-    const updated = await Vehicle.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const updateData = {
+      ...req.body,
+      firstChecked: toBool(req.body.firstChecked),
+      secondChecked: toBool(req.body.secondChecked),
+      thirdChecked: toBool(req.body.thirdChecked),
+      rc: toBool(req.body.rc),
+      puc: toBool(req.body.puc),
+      noc: toBool(req.body.noc),
+    };
+
+    const updated = await Vehicle.findByIdAndUpdate(req.params.id, updateData, { new: true });
     if (!updated) return res.status(404).json({ message: 'Vehicle not found' });
     res.json(updated);
   } catch (err) {
-    res.status(500).json({ error: 'Failed to update vehicle' });
+    res.status(500).json({ error: 'Failed to update vehicle', message: err.message });
   }
 };
 
@@ -52,6 +73,6 @@ exports.deleteVehicle = async (req, res) => {
     if (!deleted) return res.status(404).json({ message: 'Vehicle not found' });
     res.json({ message: 'Vehicle deleted successfully' });
   } catch (err) {
-    res.status(500).json({ error: 'Failed to delete vehicle' });
+    res.status(500).json({ error: 'Failed to delete vehicle', message: err.message });
   }
 };
