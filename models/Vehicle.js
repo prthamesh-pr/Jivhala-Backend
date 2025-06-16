@@ -22,4 +22,4 @@ const vehicleSchema = new mongoose.Schema({
   images: [String]
 });
 
-module.exports = mongoose.model("Vehicle", vehicleSchema);
+module.exports = mongoose.model('Vehicle', vehicleSchema);

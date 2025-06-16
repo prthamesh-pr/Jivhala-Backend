@@ -20,6 +20,7 @@ app.use('/api/vehicle', require('./routes/vehicleRoutes'));
 app.use('/api/buyer', require('./routes/buyerRoutes'));
 app.use('/api/dashboard', require('./routes/dashboardRoutes'));
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server running on port ${process.env.PORT}`);
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
